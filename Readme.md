@@ -1,4 +1,4 @@
-# 🇳🇵 KaamSewa Backend (TypeScript)
+# KaamSewa Backend (TypeScript)
 
 **KaamSewa** is a Nepali-first, service-based hiring platform where users can find and book verified technicians. This repository contains the **backend API** written in **Node.js + TypeScript**, using a modern stack: **Express**, **MongoDB**, **Redis**, **BullMQ**, and **Cloudinary**.
 
@@ -41,3 +41,10 @@
 ```bash
 git clone https://github.com/yourusername/kaamsewa-backend.git
 cd kaamsewa-backend
+```
+
+## 2 Install Dependencies
+Install the required packages:
+
+```bash
+npm install
