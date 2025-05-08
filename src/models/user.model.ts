@@ -121,7 +121,7 @@ userSchema.methods.generateAccessToken =  function (this: IUser) {
     { _id: this._id, role: this.role, email: this.email },
     secret,
     {
-      expiresIn: parseInt(expiry),
+      expiresIn: expiry,
     }
   );
 };

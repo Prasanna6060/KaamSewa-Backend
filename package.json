@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Prasanna6060/KaamSewa-Backend#readme",
   "dependencies": {
-    "@types/jsonwebtoken": "^9.0.9",
+    "@types/jsonwebtoken": "^9.0.7",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
