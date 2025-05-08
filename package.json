@@ -1,31 +1,40 @@
 {
   "name": "kaamsewa-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "**KaamSewa** is a Nepali-first, service-based hiring platform where users can find and book verified technicians. This repository contains the **backend API** written in **Node.js + TypeScript**, using a modern stack: **Express**, **MongoDB**, **Redis**, **BullMQ**, and **Cloudinary**.",
+  "main": "src/server.ts",
   "scripts": {
-    "tsc": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev ./src/server.ts"
+    "dev": "nodemon ./src/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Prasanna6060/KaamSewa-Backend.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "type": "commonjs",
-  "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
-    "@types/express": "^5.0.1",
-    "@types/node": "^22.15.14",
+  "bugs": {
+    "url": "https://github.com/Prasanna6060/KaamSewa-Backend/issues"
+  },
+  "homepage": "https://github.com/Prasanna6060/KaamSewa-Backend#readme",
+  "dependencies": {
+    "@types/jsonwebtoken": "^9.0.9",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "install": "^0.13.0",
-    "npm": "^11.3.0",
-    "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.8.3"
-  },
-  "dependencies": {
-    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.16.0",
     "mongoose": "^8.14.1"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.5",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.15.16",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }

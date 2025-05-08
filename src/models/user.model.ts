@@ -1,11 +1,11 @@
-import mongoose, { Document, Schema } from 'mongoose';
-import bcrypt from 'bcryptjs';
-
+import mongoose, { Document, Schema } from "mongoose";
+import bcrypt from "bcryptjs";
+import jwt  from "jsonwebtoken";
 interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  role: 'admin' | 'technician' | 'user';
+  role: "admin" | "technician" | "user";
   address?: string;
   profilePicture?: {
     url: string;
@@ -13,6 +13,7 @@ interface IUser extends Document {
   };
   phoneNumber?: string;
   isEmailVerified: boolean;
+  refreshToken: string;
   resetPasswordToken?: string;
   resetPasswordExpire?: Date;
   permissions: string[];
@@ -21,6 +22,8 @@ interface IUser extends Document {
   createdAt: Date;
   updatedAt: Date;
   matchPassword: (enteredPassword: string) => Promise<boolean>;
+  generateAccessToken: () => string;
+  generateRefreshToken: () => string;
 }
 
 const userSchema: Schema<IUser> = new Schema(
@@ -28,7 +31,7 @@ const userSchema: Schema<IUser> = new Schema(
     name: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     email: {
       type: String,
@@ -38,58 +41,58 @@ const userSchema: Schema<IUser> = new Schema(
       lowercase: true,
       validate: {
         validator: (v: string) => /^[a-z0-9]+@[a-z0-9]+\.[a-z]{2,3}$/.test(v),
-        message: 'Invalid email format!'
-      }
+        message: "Invalid email format!",
+      },
     },
     password: {
       type: String,
-      required: true
+      required: true,
     },
     role: {
       type: String,
-      enum: ['admin', 'technician', 'user'],
-      default: 'user'
+      enum: ["admin", "technician", "user"],
+      default: "user",
     },
     address: {
       type: String,
       required: false,
-      trim: true
+      trim: true,
     },
     profilePicture: {
       url: { type: String },
-      public_id: { type: String }
+      public_id: { type: String },
     },
     phoneNumber: {
       type: String,
       required: false,
       unique: true,
-      trim: true
+      trim: true,
     },
     isEmailVerified: {
       type: Boolean,
-      default: false
+      default: false,
     },
     resetPasswordToken: { type: String },
     resetPasswordExpire: { type: Date },
     permissions: [
       {
-        type: String
-      }
+        type: String,
+      },
     ],
     dateOfBirth: { type: Date },
     lastLogin: {
       type: Date,
-      default: Date.now
-    }
+      default: Date.now,
+    },
   },
   {
-    timestamps: true 
+    timestamps: true,
   }
 );
 
 // Pre-save middleware to hash the password
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
 
   try {
     const salt = await bcrypt.genSalt(10);
@@ -100,10 +103,32 @@ userSchema.pre('save', async function (next) {
   }
 });
 
-userSchema.methods.matchPassword = async function (enteredPassword: string): Promise<boolean> {
+userSchema.methods.matchPassword = async function (
+  enteredPassword: string
+): Promise<boolean> {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const User = mongoose.model<IUser>('User', userSchema);
+userSchema.methods.generateAccessToken =  function (this: IUser) {
+  const secret = process.env.ACCESS_TOKEN_SECRET;
+  const expiry = process.env.ACCESS_TOKEN_EXPIRY;
+
+  if (!secret || !expiry) {
+    throw new Error("Missing ACCESS_TOKEN_SECRET or ACCESS_TOKEN_EXPIRY in environment variables.");
+  }
+
+  return jwt.sign(
+    { _id: this._id, role: this.role, email: this.email },
+    secret,
+    {
+      expiresIn: parseInt(expiry),
+    }
+  );
+};
+
+
+userSchema.methods.generateRefreshToken = function () {};
+
+const User = mongoose.model<IUser>("User", userSchema);
 
 export default User;
