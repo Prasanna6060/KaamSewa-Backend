@@ -1,11 +1,13 @@
 import { RequestHandler,Request, Response, NextFunction } from "express";
 import User from "../models/user.model";
 
- export const registerUser = async (
+ export const registerUser = async function(
   req: Request,
   res: Response,
   next: NextFunction
-) => {};
+)  {
+  
+};
 
  export const loginUser  = async function(req: Request,res: Response, next: NextFunction): Promise<any> {
   const { email, password, role } = req.body;
